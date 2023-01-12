@@ -16,8 +16,9 @@ io.on("connection", (socket) => {
     message: "Bienvenido al cinco letras oh oh",
     fecha: new Date(),
   });
-  socket.on("mensaje-cliente", (data) => {
+  socket.on("mensaje-to-server", (data) => {
     console.log(data);
+    io.emit("mensaje-from-server", data);
   });
 });
 

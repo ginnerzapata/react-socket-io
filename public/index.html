@@ -20,13 +20,13 @@
         <div class="col-8">
           <input
             type="text"
-            id="mensaje"
+            id="txtMensaje"
             placeholder="mensaje"
             class="form-control"
           />
         </div>
         <div class="col-4">
-          <button class="btn btn-primary">Enviar</button>
+          <button type="submit" class="btn btn-primary">Enviar</button>
         </div>
       </div>
     </form>
@@ -44,11 +44,21 @@
     ></script>
     <script>
       const socket = io("http://localhost:8080");
+
       const formulario = document.querySelector("#miFormulario");
       const mensajes = document.querySelector("#misMensajes");
+      const txtMensaje = document.querySelector("#txtMensaje");
 
-      socket.on("mensaje-bienvenida", (data) => {
-        console.log(data);
+      formulario.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const texto = txtMensaje.value;
+
+        socket.emit("mensaje-to-server", { texto });
+        txtMensaje.value = "";
+      });
+
+      socket.on("mensaje-from-server", (data) => {
+        mensajes.innerHTML += `<li>${data.texto}</li>`;
       });
     </script>
   </body>
